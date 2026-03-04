@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organizador de Rotas - Zé Delivery</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+textarea {
+    width: 90%;
+    height: 150px;
+    margin: 10px 0;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn {
+    background: #00c853;
+    color: white;
+}
+
+.btn2 {
+    background: #2962ff;
+    color: white;
+}
+
+.result {
+    margin-top: 20px;
+    word-break: break-all;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🚚 Organizador de Rotas - Zé Delivery</h1>
+
+<p>Cole os endereços (um por linha):</p>
+
+<textarea id="enderecos" placeholder="Ex:
+Rua A, 123 - Campinas
+Rua B, 456 - Campinas
+Rua C, 789 - Campinas"></textarea>
+
+<br>
+
+<button class="btn" onclick="gerarRota()">Gerar Rota no Google Maps</button>
+<button class="btn2" onclick="limpar()">Limpar</button>
+
+<div class="result" id="resultado"></div>
+
+<script>
+function gerarRota() {
+    let texto = document.getElementById("enderecos").value.trim();
+
+    if (!texto) {
+        alert("Cole os endereços primeiro!");
+        return;
+    }
+
+    let lista = texto.split("\n");
+
+    if (lista.length < 2) {
+        alert("Coloque pelo menos 2 endereços!");
+        return;
+    }
+
+    let origem = lista[0];
+    let destino = lista[lista.length - 1];
+    let waypoints = lista.slice(1, lista.length - 1).join("|");
+
+    let link = "https://www.google.com/maps/dir/?api=1" +
+               "&origin=" + encodeURIComponent(origem) +
+               "&destination=" + encodeURIComponent(destino) +
+               "&waypoints=" + encodeURIComponent(waypoints);
+
+    document.getElementById("resultado").innerHTML =
+        "<p>Rota gerada:</p><a href='" + link + "' target='_blank'>" + link + "</a>";
+}
+
+function limpar() {
+    document.getElementById("enderecos").value = "";
+    document.getElementById("resultado").innerHTML = "";
+}
+</script>
+
+</body>
+</html>
